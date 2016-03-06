@@ -56,10 +56,10 @@ public:
     {
         PrepareSpellScript(spell_monk_roll_SpellScript);
 
-        void CheckDirection(SpellEffIndex /*effIndex*/)
+        void CheckDirection()
         {
             Unit* caster = GetCaster();
-            if (caster->isInBack())
+            if (caster->HasUnitMovementFlag(MOVEMENTFLAG_BACKWARD))
             {
                 caster->CastSpell(GetCaster(), SPELL_MONK_ROLL_BACKWARD, true);
             }
