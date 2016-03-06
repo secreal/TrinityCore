@@ -31,7 +31,8 @@
 
 enum MonkSpells
 {
-
+    SPELL_MONK_ROLL_FORWARD = 107427,
+    SPELL_MONK_ROLL_BACKWARD = 109131
 };
 
 enum MonkIcons
@@ -44,6 +45,43 @@ enum MiscSpells
 
 };
 
+// 109132 - Roll
+/// 6.x
+class spell_monk_roll : public SpellScriptLoader
+{
+public:
+    spell_monk_roll() : SpellScriptLoader("spell_monk_roll") { }
+
+    class spell_monk_roll_SpellScript : public SpellScript
+    {
+        PrepareSpellScript(spell_monk_roll_SpellScript);
+
+        void CheckDirection(SpellEffIndex /*effIndex*/)
+        {
+            Unit* caster = GetCaster();
+            if (caster->isInBack())
+            {
+                caster->CastSpell(GetCaster(), SPELL_MONK_ROLL_BACKWARD, true);
+            }
+            else
+            {
+                caster->CastSpell(GetCaster(), SPELL_MONK_ROLL_FORWARD, true);
+            }
+        }
+
+        void Register() override
+        {
+            OnCast += SpellCastFn(spell_monk_roll_SpellScript::CheckDirection);
+        }
+    };
+
+    SpellScript* GetSpellScript() const override
+    {
+        return new spell_monk_roll_SpellScript();
+    }
+};
+
 void AddSC_monk_spell_scripts()
 {
+    new spell_monk_roll();
 }
