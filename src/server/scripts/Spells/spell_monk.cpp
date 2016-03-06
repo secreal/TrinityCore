@@ -31,8 +31,7 @@
 
 enum MonkSpells
 {
-    SPELL_MONK_ROLL_FORWARD = 107427,
-    SPELL_MONK_ROLL_BACKWARD = 109131
+    SPELL_MONK_ROLL = 107427
 };
 
 enum MonkIcons
@@ -56,22 +55,15 @@ public:
     {
         PrepareSpellScript(spell_monk_roll_SpellScript);
 
-        void CheckDirection()
+        void DoRoll()
         {
             Unit* caster = GetCaster();
-            if (caster->HasUnitMovementFlag(MOVEMENTFLAG_BACKWARD))
-            {
-                caster->CastSpell(GetCaster(), SPELL_MONK_ROLL_BACKWARD, true);
-            }
-            else
-            {
-                caster->CastSpell(GetCaster(), SPELL_MONK_ROLL_FORWARD, true);
-            }
+                caster->CastSpell(GetCaster(), SPELL_MONK_ROLL, true);
         }
 
         void Register() override
         {
-            OnCast += SpellCastFn(spell_monk_roll_SpellScript::CheckDirection);
+            OnCast += SpellCastFn(spell_monk_roll_SpellScript::DoRoll);
         }
     };
 
